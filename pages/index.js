@@ -1,8 +1,25 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import Head from "next/head";
+import Image from "next/image";
+import { useState } from "react";
+import aathu from "../lib/aathu";
+import handleLogout from "../lib/handlelogout";
+import styles from "../styles/Home.module.css";
 
-export default function Home() {
+export default function Home({ user }) {
+  console.log(user?.photoURL);
+  // const [loading, setLoading] = useState(true);
+  // const { user, isLoggedIn } = aathu();
+
+  // if (!isLoggedIn) {
+  //   if (loading) {
+  //     return <p>Loading...</p>;
+  //   }
+  //   return (
+  //     <div>
+  //       <h1>Please login to see the user info</h1>
+  //     </div>
+  //   );
+  // }
   return (
     <div className={styles.container}>
       <Head>
@@ -17,7 +34,7 @@ export default function Home() {
         </h1>
 
         <p className={styles.description}>
-          Get started by editing{' '}
+          Get started by editing{" "}
           <code className={styles.code}>pages/index.js</code>
         </p>
 
@@ -49,6 +66,54 @@ export default function Home() {
               Instantly deploy your Next.js site to a public URL with Vercel.
             </p>
           </a>
+          <a className={styles.card}>
+            <h2>User &rarr;</h2>
+            <p>
+              <>
+                {user && (
+                  <div>
+                    <h2>User Info: </h2>
+                    <strong>Email: </strong>
+                    {user?.email}
+                    <br />
+                    <strong>Display Name: </strong>
+                    {user?.displayName}
+                    <br />
+                    <strong>Photo URL: </strong>
+                    {user.photoURL ? (
+                      <img
+                        src={user.photoURL}
+                        alt="User Photo"
+                        width={200}
+                        height={200}
+                      />
+                    ) : (
+                      <img
+                        src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+                        alt="User Photo"
+                        width={200}
+                        height={200}
+                      />
+                    )}
+                    <br />
+                    <strong>UID: </strong>
+                    {user?.uid}
+                    <br />
+                    <strong>Provider Id: </strong>
+                    {user?.providerId}
+                    <br />
+                    <strong>Is Anonymous: </strong>
+                    {JSON.stringify(user?.isAnonymous)}
+                    <br />
+                    <strong>Is Email Verified: </strong>
+                    {JSON.stringify(user?.emailVerified)}
+                    <br />
+                  </div>
+                )}
+              </>
+            </p>
+            <button onClick={handleLogout}>Logout</button>
+          </a>
         </div>
       </main>
 
@@ -58,12 +123,12 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <span className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
       </footer>
     </div>
-  )
+  );
 }
